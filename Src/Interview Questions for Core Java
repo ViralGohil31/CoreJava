@@ -1,0 +1,313 @@
+Interview Questions for Core Java
+
+Working of JVM
+
+
+Basic
+	 1. Difference between final,finally,finalize.
+	 	 final---
+		 	 --> final keyword can be used with class,method and variable.
+		 	 --> if variable is declared as final than we can not assign the value to variable again once it is assign value to variable.
+		 	 --> if method is declared as final than we can not able to override that method in subclass.
+		 	 --> if class is declared as final than we cannot create sub class of this class,interface and abstract class cannot allow to declare final.
+		 	 
+	 	 finally--
+		 	 --> finally is block  will execute even if exception occurs in try block or not.and it will also execute before it return statement execute.
+		 	 --> FINALLY BLOCK IS USED TO closing file,freeing any resources that might be allocated at the beginning of the method.
+		 	 --> finally clause is optional however with try statement we can use catch statement with finally or only finally  
+		 	 
+	 	 finalize-- 
+	 	 	--> finalize() is called before garbage collector reclaim the object,it last chance for any object to perform cleanup activity.
+	 	 	--> the main issue with finalize method is it's not gurranted that by JLS that it will be called  by garbage collector or when it will be called.
+	 	 	 	for example,an object may wait indefinitely after becoming eligible for garbage collection and before its finalize() method gets called.
+	 	 	--> similarly evan after finalize() gets called it's not gurranted it will be immediately collected.
+	 	 	
+	 2. access modifier 1.public 2. protected 3. private 4. default and non access modifier 1. final
+	 	public    --> if we make class,variable,method as public than we can able to aceess it from outside the package or within the package.
+	 	private   --> if we make variable is private than it can only acccessible inside the class only,class cannot make private.
+	 	protected --> if we make vaiable or method as protected than it can be access it through by inheritence to access it from inside or outside the package and within the same class.it will also not allowed to access if create object of class outside the package or inside the package.it will only access it through inheritence or we can say extending that class.
+	 	default   --> if we not mark any class,variable or method any modifier than it consider as default modifier. that is accessible only within the package. 
+	 		 private is most restricted modifier after that default is only package level after that protected than public.
+	 		 private ---> default --->protected ---> public
+	 		 
+	 3. What is Serializable interface. what are the marker interface.
+	 	--> Serializable is marker interface.marker interface is created for the use to make sense to the compiler that it has to add some functionality.
+	 	--> Serializable is use to save persitent state of object into memory.
+	 	 
+	 4. Static keyword.
+	    --> if we make variable , methods as static than that will belongs to class not object.
+	    	static variables or methods loads it's initial value at a time of class loading.so if make any number of objects of class,but static member of class is common for all the objects.
+	    	if one object make changes to static member of class than it will common to get access by all objects of that class.
+	    --> If we make any methods as static than we can not able override that method in subclass because static method is loaded at the time of class load.
+	    
+	    
+	 5. When object gets garbage collected. 
+	 	Garbage collection is process of reclaiming the runtime unused memory automatically.It is the way to destroy unused objects.
+	 	Garbage collector removes the unreferenced objects from heap memory.
+	 	There are many ways to unreferenced objects :
+	 		--> by nulling the reference.
+	 			example :- Employee e = new Employee();
+	 						e = null; 
+	 		--> by assigining reference to another.
+	 			example :- Employee e1 = new Employee();
+	 					   Employee e2 = new Employee();
+	 					   e1 = e2; // nowthe first object referred by e1 is available for garbage collection.
+	 					   
+	 		--> by annonymous object etc.
+	 			example :- new Employee();
+	 			
+	 		 
+	 6. JVM Argument
+	 
+	 7. Heap memory vs Stack memory.
+	  --> Heap memory is used by all parts of the application wheres Stack memory used by one thread of execution.
+	  --> Whenever Object is created it stored in heap memory and stack memory contains the reference to it.
+	  --> Stack memory only contains local primitive variables and reference variables to objects in heap space.
+	  --> objects stored in heap space are globally accessible while stack is not global accessible.stack memory cannot be accessible by other threads.
+	  
+	  8. volatile and transient Keyword
+	  	transient --> if you don't want to serialize any data member of class,you can mark it as transient.
+	  	volatile  --> volatile tells the compiler that the value of a variable must never be cached as it's value may change outside the scope of the program.
+
+Object Oriented Programing
+	 1. Why Java does not supported multiple inheritance.
+		--> first reason is ambiguity around diamond problem. consider class A has foo() method and class b and class d extends class A. class b and d has there own foo() method.
+		    and there is class D which extends b and c using muliple inheritence.if we refer just foo() method than compiler will not be able to decide which foo() method it should invoke.
+		--> multiple inheritence does complicate design and creates problem during casting,constructor chaning.
+		
+	 2. What is rule of Overriding,Overloading,Interface.
+		
+	 3. what is abstraction,composition,aggregation.
+	 4. what is encapsulation.
+	 	--> encapsulation is the mechanism for restrict access to an object's components.it's aim for high maintenance and handling of the application's code.
+	 	--> also,the encapsulation mechanism protects the member of a class from external access, in order to protected against unauthorized access.
+	 	--> encapsulation provides the ability to modify our implemented code without breaking the code of others who can use our code.
+	 		Advantage
+	 		--> we can achieve maintainability , flexibility and extensibility of our code.
+	 
+
+
+String
+	1. What is difference between creating String using String a = new String("Abc") and String b= "Abc".
+		--> refer StringBasics.txt inside String Package
+		
+	2. Why String is immutable.
+		Following reasons
+		Requirement of String pool
+			-->whenever we create String by String a="abc" than it will first check it in String pool if it is already present than returns the reference to it.
+			   if more than one String reference to same String in String pool than if one String will change than other reference will get wrong.
+		Alllow String to cache it's hashcode
+			-->the hashcode of string is frequently used in java for example HashMap.being immutable will always returns the same hashcode.
+		Security
+			-->String is widely used as parameter for many java classes eg. network connection or file would be changes and lead to serious security threat
+			
+			
+	3. What java designer write to make String Immutable or how to make immutable Object.
+		-->Steps
+			State of immutable object cannot modified after construction, any modification to object should return new object.
+			all fields of immutable object should be final.
+			object must be properly constructed. ie. object reference should not be leak during construction process.
+			class of immutable object should be final in order to restrict sub class for altering immutability of parent class.
+	
+	4. Write a program that will remove repeated character from String for example input : 111222333355 than output 1235
+		
+	5. Difference between String,StringBuilder and StringBuffer.
+		--> String is Immutable wheres StringBuilder and StringBuffer is Mutable.means String cannot change once it is created.wheres StringBuilder and StringBuffer can change able to change it's value.
+		--> String is thread safe because Immutable.wheres StringBuilder can not thread safe.and also StringBuffer is Thread safe because each methods in StringBuffer is synchronized.
+		
+
+Collection
+	1. Working of HashMap.
+		--> HashMap actually works on Key,Value Pair.Key is basically used to search right bucket.based on the hashCode value of Key bucket is choosen.
+			after that it will compare the element which it is inserted with element present in that bucket.element in the bucket is maintained by Linked List.
+			so if (key is already found in that bucket && with the same hashCode OR if same object found)than it will replace replace previos element with new element.and it will also allow to add one null key value.
+			
+	2. equals() and hashCode() methods and contract between them.
+		--> if we add Key as Object in HashMap than we should have to Override equals() and hashCode() method of Object class.
+			HashMap use hashCode() method of class to find right bucket. and equals() method is used to find whether elemnt which are adding into bucket which is already present in bucket.
+			
+			Contract between equals() and hashCode()
+			--> if the equals() method return true than the hashCode() of the two object must be same.
+			--> if hashCode of two Objects are same than it doesn't mean both the object are to be same.
+		
+	3. difference between hashMap and HashTable.
+		--> HashMAp is not thread safe where hashTable is Thread Safe.
+		--> HashMap allows one null key and null values but doesn't allow null key or values.
+		--> Thread safety in HashTable is acheived using internal synchronization which makes it slower than HashMap.
+		--> Iterator in HashMap is fail-fast while enumeration for hashTable is not.
+		
+		
+	4. TreeMap Working.
+		--> TreeMap	 internally used RedBlack Tree.	it does not contain null keys but conatain multiple null values.we will retrive the elements from TreeMap in ascending order.
+			
+		
+		
+	5. difference between Set,Queue,List. or what are Interface that implements Collection Interface.
+		
+		List
+		--> List is the Interface which used by ArrayList,LinkedList to store store the elements in the order in which they are inserted.
+			ArrayList
+				ArrayList is use to store elements in sequential order.this collection is used when we want access collection more time than inserting and removing from specified postion from List.
+				
+			LinkedList
+				LinkedList is internally maintiain doubly link list. this data structure we used when we want to  add and remove elements from specified elements from list.
+				
+		Set
+		--> Set is used to Store Unique element. it will be used HashMap,LinkedHashMap and TreeMap for It's Implementation internally.
+		--> any element we are storing that is Key used in the  case of HashSet it used HashMap, In case of LinkedHashSet it used LinkedHashMap and in case of TreeSet it used TreeMap.
+			
+			HashSet
+				HashSet does not maintain insert order.it used HashMap store elements.it will not allow to store duplicate element
+			
+			LinkedHashSet
+				LinkedHashSet will Maintain the insertion oreder because it Internally used LinkedHashMap.it will not allow to store duplicate element.
+				
+			TreeSet
+		
+		Queue
+		-->		
+		
+	6. When do we need to implement Comparator Interface.
+		Two Cases where we need to implemet Comparator interface.
+		1. Collection class provides static method to sort the collection. if we use Map or Set than there is TreeMap or TreeSet which can used to store element in sorted manner.
+			but when we use List than we can sort the collection.so we can used sort method.
+		2. When we add element in the TreeMap at that time if we used User Defined Object as key .so we need to implemet Comparable interface.
+			because TreeMap internally used as RedBlackTree . so at the time of adding it will compare the key and store it in appropriate positions.
+		
+		
+	7. What are the Thread safe Collection class.is HashMap is Thread safe.	
+		HashMap is not thread safe.when we iterating over hashMap and another thread try to modify HashMap will throw ConcurrentModificationException.
+		There are some of the Concurrent Collections classes.
+		-->CopyOnWriteArrayList
+		-->ConcurrentArrayList
+		-->ConcurrentHashMap
+		
+	8. What do you mean by fail-fast and fail-safe iterator.
+	   Fail Fast iterator  wil not allow any modification by another thread in the collection while one thread is traversing the element it will throw ConcurrentModificationException if any modification in collection.
+	   while fail Safe Iterator  will allow to manipulate the collection by another thread because thread used clonneble or we can say copy of same object whlile traversing not actual object.
+	   HashMap,ArrayList or any data structure of java.util package are not thread safe.
+	   
+	9. Difference between Iterator and Enumeration.
+		--> Iterator has remove() method while Enumeration doesn't. enumeration acts as a read only interface,because it has method only to read and traverse object.
+			while Iterator has method to manipulate the object like adding and removing the object from collection.
+		-->	Iterator is more secure than enumerator because Iterator does not allow other thread to modify the collection object. if other thread does than it will throw ConcurrentModificationException.
+			
+	10. Difference between SynchronizedHashMap and ConcurrentHashMap and HashTable.
+	
+					Synchronized HashMap 				   			|	ConcurrentHashMap								    		|	  HashTable
+	----------------------------------------------------------------|---------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------				
+		1. Collections.synchronizedMap(hashmap);	 				|	1. by creating object										|	1. by creating object
+																	|																|
+		2. Each Method is synchronized using object  				|	2. Concurrent HashMap will lock only  						|	2. HashTable is same like SynchronizedMap but only difference is that		
+		    level lock.so each method is synchronized.			   	|		portion of data which are being updated. 				|	   it is available from java 1.1 while Synchronized MAp is used to make hashmap to Synchronized HashMap	
+		    this is used to provide thread safe.				   	|		while other portion of data can be accessed by			|	   for thread safety.all the methods of HashTable are also Synchronized same as Synchronized HashMap
+		    In short while one thread is doing any				   	|		other threads.											|	   so HashTable is lock the whole map.
+			operation or say any method access than					|																|
+			no other thread allow to perform any					|																|
+			operation once threadis released the lock.				|																|
+																	|																|
+		3. If one thread is iterating and other thread at			|	3. ConcurrentHashMap gurantees that there is no				|   3. all the thread has to wait one thread which acquired the lock which is iterating over 
+		   same time trying to updating the map by calling			|		ConcurrentModificationException throw while one			|		map.because all the methods are synchronized.
+		   map.put(K,V) we will get ConcurrentModificationException.|		thread is updating the map and the other thread is		|
+																	|		trying to updating the map by calling map.put(K,V),		|
+																	|		we will get ConcurrentModificationException.			|
+																	|																|
+		4. allow one null key										|	4. does not allow null keys or null values					|	4. does not allow null key or null values
+																	|	
+																	|	5. Minimum Concurrency level is 16.							|
+																	|     it will allow any number of thread read access.but allows |															|
+																	|	  maximum 16 thread to simultanously update/add to thread   |
+																	|	  if all are not access the different Thread.               |
+																	|	                                                            |
+																	|	  
+																	|	  
+																	|	  
+																	|	  
+																		  
+																		  
+																		  
+																		   
+	11. What is reHashing and load factor in hashmap.
+		--> Rehashing is made in hashmap when HashMap reached it's threhold limit.
+		 	the default value of HashMap size is 16.and load factor is 0.75.so when we inserted 13 th value in hashmap
+		 	than it reached it's 75% of HashMap size.
+		--> so that it will increased the size of HashMap to double to it's size.
+			the HashCode of key is calculated in such a way that maximum possiblity to distribute all value to all bucket equally.
+		--> so when we increased the size of HashMap than we have more bucket available.
+			so that we are again calculating the HashCode to distribute all the values of HashMap.and stored again in HashMap.
+			that is called Rehashing.
+				
+		-->more detail see Rehashing In Hashmap.jpg in CollectionExample package.
+		
+	11. Difference between Comparable and Comparator interface.
+		
+		 
+MultiThreading
+	1. Thread Life Cycle.
+		There are four states of Thread
+		
+		1. New      --> The Thread is in new state if you create an instance of Thread class but before the invocation of start() method.
+		2. Runnable --> The Thread is in runnable state after invocation of start() method.but the thread scheduler has not selected it to be the running thread.
+		3. Running  --> The Thread is in ruuning state if it is selected by scheduler for runnning.
+		4. Non Runnable or blocked --> After sleep or wait().
+		4. Terminated --> a thread is in terminated or dead state when its run() methods exits.
+
+	2. Working of Scheduler.
+		-->
+	3. Producer Consumer Problem.
+	4. Synchronization.
+	5. Difference between Synchronized methods and synchronized block.
+		--> when we Synchronized method level than it will lock the instance of object.
+		--> In Synchronized block we are passing argument as object to which we want get lock.
+		--> Synchronized(this) will use to get lock on current instance of that object. 
+			 
+	6. wait() and notify()
+		- Wait method will release the lock on object which will acquire by one thread.and wait untill another thread will notify() on same object lock.
+		  so the first thread will start continue to execute.
+		
+	7. Difference between Iterator and List Iterator
+	--> We can traverse in one direction only in Iterator but using List Iterator we can traverse in both the direction.
+	--> We cannot obtain index using Iterator but using List Iterator we can obtain Index.The methods nextIndex() and previousIndex() are used for this purpose.
+	--> We cannot add element to colection while traversing , it will throws ConcurrentModification Exception, but in List Iterator we can add element at any point of time.
+	--> We cannot replace existing list element using Iterator but using List Iterator we can replace the value  by using set(E e) method of List Iterator 
+	--> Methods of Iterator
+		hasNext()
+		next()
+		remove()
+	--> Methods of List Iterator
+		add(E e)
+		hasNext()
+		hasPrevious()
+		next()
+		nextIndex()
+		previous()
+		previousIndex()
+		remove()
+		set(E e)
+		  
+	8. How to process 10 Gb file in 2 GB RAM pc.
+	->
+	
+		  
+Java 8 New Features
+ -->  Lamdba Expression.
+ 		parameter -> expression body
+ 		Lambda expression is used primarily to define inline implementation of a functional interface i.e an interface with a single method only.
+ 		Lambda expression eliminates the need of anonymous class and gives a very simple yet powerful functional programing capability.
+ 		
+ -->  Default and static Methods in interface.
+ 	  one of the reason to implement default method in java is to implement Lambda expression.
+ 	  because Lambda expression will only implement if only one method is specified in interface.otherwise it will make compile time error that 
+ 	  "The target type of this expression must be a functional interface". 
+ 	  so if we used method which we need to implment in interface other than that method we marked as default method and provide implementation to that method.
+	
+	  the class which implments the interface will not have to mandatory to override the default methods.
+	  so if any change to interface which marked as default than we don't need to do any changes in class which implments this interface.
+	
+	
+	
+	
+	ClassNotFound and ClassDefNotFound Exception
+	
+	
+	   

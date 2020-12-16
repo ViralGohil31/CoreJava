@@ -1,0 +1,209 @@
+ORACLE SQL/PLSQL
+
+First Where clause to select rows from table --> than Group by clause --> than Having Clause
+
+1.  Difference between DELETE and TRUNCATE.
+
+--> TRUNCATE is DDL command while DELETE is DML command.
+--> TRUNCATE is executing using table lock and whole table is locked.and whole table is locked for removes all records.
+--> DELETE is executing using row lock,each row in the table is locked for deletion.
+--> We cannot use where clause with TRUNCATE.
+--> we can use where claues with DELETE to filter & DELETE specific records.
+--> TRUNCATE removes all rows from a table.
+--> minimal logging in case of DELETE, so it is performance faster.
+--> TRUNCATE TABLE removes the data by deallocating the data pages used to store the table data and records only the page deallocations in the transaction log.
+--> the DELETE statement removes rows one at a time and records an entry in the transaction log for each deleted row.
+--> to use Truncate on a table you need at least ALTER permission on the table.
+--> to use DELETE on a table you need DELETE permission on the table.
+--> TRUNCATE uses less transaction space than DELETE.
+--> DELETE uses more transaction space than ALTER.
+--> Truncate cannot be used with Index Views.
+--> DELETE can be used with index views.
+--> TRUNCATE table can't activates trigger because the operation does not log individual row deletions.when we run truncate table then it actually doesn't removes all rows of table,
+	rather it deallocates the data pages.In case of TRUNCATE triggers will not be fired because no modification takes place, we have
+	just deallocates the data pages not deleted any row from table.
+	
+
+2.  Difference between PROCEDURE and FUNCTION
+												Function										|							Procedure
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Purpose 					:	Function is written for specific task or computations. 			|		Procedure is written to execute a bussiness logic.
+																								|
+Return Value				:	Functions at least return one value of any data type.			|		Procedure may or may not return a value.more values can
+								More values can be return using OUT parameters.					|			be return using OUT parameters(maximum 1024)
+																								|								
+Call From SQL Statements	:	Function can be called from SQL statements						|		Procedure cannot be called from SQL statements			
+(Insert,Update,Delete)			e.g select function_name() from dual;							|
+																								|
+DML Statements				:	DML Statements(Insert,Update,Delete) can be called				|		DML Statements can be called inside Procedures. you can call that procedure 
+								inside functions but that function cannot be used in			|		inside other Procedure.
+								SQL statements													|
+																								|
+Execution 					: function can be executed in following ways.						|		Procedure can be executed in following ways.
+								1. Inside Sql Query												|		1.	In Begin....End Blocks
+									Select procedure_name(parameters) from dual					|			Begin
+								2. Using assignment operator									|					procedure_name(parameters)
+									var arg := function_name(parameters);						|			END;
+																								|		2. Using Execute command
+																								|			Execute procedure_name(parameters)
+																								|		3. calling procedure
+																								|			procedure_name(parameters)
+																								|
+																								
+3.  Case and Decode Expression.
+
+																			
+4.  Types of Join
+ --> Inner Join
+ --> Cross Join or Cartesian Join
+ --> Left Outer Join
+ --> Right Outer Join
+ --> Full Outer Join
+
+5.  Aggregate functions
+ --> 1. Sum, 2.Avg, 3.count, 4.max ,5.min
+ 
+6.  Clustered Index and non Clusterd Index
+
+7.  Find table data size through SQL
+8.  SQL statement which list number of objects like tables,views,sequences,functions and procedure.
+9.  Result Cached function, DBMS_Parallel_Execution package,Simple Integer Data type,PL/SQL Error reporting function.
+
+10. BULK collect and FORALL example.
+-->
+	BULK COLLECT :- SELECT statement that retrieve multiple rows with a single fetch,
+					improves the speed of data retrieval.
+					Use Bulk collect clause to fetch multiple rows into one or more collections 
+					with a single context switch.
+	
+		About BULK COLLECT:
+			to take advantage of bulk processing for queries, you simply put BULK COLLECT before INTO 
+			keywords and then provide one or more collections after INTO keyword.
+			
+			Here are some of the things about how BULK COLLECT works:
+			1. It can be used with all three types of collections : associative arrays, nested tables and VARRAYS.
+			
+			2. you can fetch into individual collections(one for each expression in the SELECT list) or 
+			   a single collection of records.
+			
+			3. collections always populated densely, starting from index value 1.
+				if no records are fetched then the collection is emptied of all elements.
+				
+				example : fetching values for two columns into a collection.
+				
+				DECLARE
+					TYPE two_cols_rt IS RECORD(
+						employee_id employees.employee_id%TYPE,
+						salary employees.salary%TYPE
+					);
+					
+					TYPE employye_info_t IS TABLE OF two_cols_rt;
+					l_employees employye_info_t;
+					BEGIN
+						SELECT employee_id,salary 
+						BULK COLLECT INTO l_employees
+						FROM employees WHERE department_id=10;
+					END;
+					
+					TYPE employee is TABLE of c1%ROWTYPE;  // where c1 is cursor
+					
+			4. If you are fetching lots of rows,the collection that is being filled cosumed lots of session memory.
+			   and raise an error, ORACLE database offers a LIMIT clause for BULK COLLECT.
+			    for example, there could be tens of thousands of employees in a single department and may session does not
+			    have enough session memory available to store 20,000 employee ids in a collection.
+			    Instead i use the below approach.
+			    
+			    DECLARE
+			    	c_limit NUMBER:=100;
+			    	
+			    	CURSOR employee_cur
+			    	IS
+			    		SELECT employee_id
+			    		from
+			    		employees
+			    		where
+			    		department_id=department_id_in;
+			    		
+			    	TYPE employee_ids_t IS TABLE OF employees.employee_id%TYPE;
+			    	l_employees_ids employee_ids_t;
+			    	BEGIN
+			    		OPEN employee_cur
+			    		LOOP
+			    			FETCH employee_cur
+			    			BULK COLLECT INTO l_employees_ids
+			    			LIMIT c_limit;
+			    			EXIT WHEN l_employees_ids.COUNT=0;
+			    		END LOOP;
+			    	END;
+			    	
+			    		 
+	
+	
+	FORALL		:- INSERT's , UPDATE's and DELETE's that uses collections to change multiple rows of data
+				   very quickly.
+				   Use FORALL statement when you need to execute the same DML statement repeatedly for
+				   different bind variable values.
+				   
+				   About FORALL :
+				   1. The FORALL statement is not a loop;it is a declarative statement to the PL/SQL engine:
+				   	  "Generate all the DML statements that would have been executed one row at a time,and
+				   	  	sends them all across to the SQL engine with one context switch."
+				   	  	
+				   
+					
+					
+
+11. dense rank function.
+	-->
+	
+12. Write an SQL to retrieve last record added to the employeeData table.
+	-->
+	
+13. Write a PLSQL program to read data from external file
+	-->
+	
+14  What is output of this select 12+13+null from dual
+	--> null
+	
+15. Analytical Functions
+
+16. Write a query to count the occurence of substring "ID" in string  "MINDCRAFT MINDCRAFT" using analytical function.
+
+17  Update NULL with 99,0 with 98 and 1  with 97 in one update statement.
+
+18. Normalization
+
+19  Diffrence between Unique key and primary key.
+	--> Unique Key allows multiple null values where Primary key does not allow null values at all.
+	--> BEHAVIURAL : PRIMARY KEY IS USED TO IDENTIFY A ROW (record) in a table whereas unique key is used to prevent duplicate values in a column.
+	--> Indexing   : By default sql engine creates Clusterd Index on primary key if not exists and Non-clusterd index on unique key.
+	--> Nullability : Primary key does not include null values whereas Unique key can.
+	--> Existence  : A table can have atmost one primary key but have multiple unique key.
+	--> Modifiability : You cannot change or delete primary values but unique key values can.
+	 
+20. Constraints
+
+
+
+SQL QUERY 
+
+1. SQL query in sql to find employees who have maximum salary from each department.
+	
+	--> SELECT a.* FROM EMPLOYEE a,(SELECT deptID,max(sal) sal from employee group by deptId) b WHERE a.deptId = b.deptID and a.sal = b.sal;
+
+2. SQL query in sql to find employee who has salary more than average salary of department.
+	
+	--> SELECT a.* from EMPLOYEE a where sal>(SELECT avg(sal) from EMPLOYEE b where a.deptId  = b.deptId  GROUP BY deptID);
+	
+3. SQL query to get fourth maximum salary of employee or Query to get Nth Maximum salary of employee.
+
+	--> SELECT * FROM EMPLOYEE a WHERE 4-1=(SELECT COUNT(SAL) FROM EMPLOYEE b where b.sal> a.sal);
+	
+4. Delete duplicate rows from the table.
+	--> With EmployeeCTE AS(
+			select *,ROW_NUMBER() over(Partition By ID order by ID) As RowNumber
+			from Employees
+		) 
+		Delete from EmployeeCTE where RowNumber >1;  
+		
+

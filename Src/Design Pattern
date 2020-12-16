@@ -1,0 +1,58 @@
+Design Pattern
+
+1. Creational Design Pattern
+	--> Factory Design Pattern
+		Object creation will be handled by different class. 
+	
+		When to use : When we have multiple subclass and one parent class based on the input we are returning one of the subclass.
+		Advantege   : It allows loose coupling
+		Example     : BeanFactory in Spring is the best example of Factory Design pattern
+				  
+	--> Singletone Design Pattern
+	
+		When to use : Singletone design pattern is used for caching, logging ,thread pool.  
+		Advantage   : will ensure that only one instance of class is created in the java virtual machine 
+		Example 	: 
+	
+	--> Builder Design Pattern
+		When to use	: alternative way to create complex objects.
+					  there is problem in factory and abstrat factory design pattern is that too many paramenter need to pass
+					  at time of object creation.and also required to pass parameter for optional parameter.
+					  
+		Advantage 	:  
+		Example		: StringBuilder append() and StringBuffer append() is example of Builder design pattern.
+	
+	--> Prototype Design Pattern
+		When to use : used when object creation is costly affairs  and required a lot of time and resource and 
+					  you have similar object already exists.
+		
+					 provides a mechanism to create copy of original object and modify it according to our use.
+					 uses clonning to copy the object. 
+		
+		Advantage : similar object we can create without wasting time and resource.
+		
+		Example : 
+		
+		  
+2. Structural Design Pattern
+	--> Adapter Design Pattern
+	--> Decorator Design Pattern
+	--> Proxy Design Pattern
+	--> Composite Design Pattern
+	--> FlyWeight Design Pattern
+	--> Facade Pattern
+	--> Bridge Pattern
+	
+
+3. Behavioral Design Pattern
+  	--> Chain of Responsibility Pattern
+  	--> Observer Pattern
+  	--> Strategy Pattern
+  	--> State Pattern
+  	--> Iterator Pattern
+  	--> Command Pattern
+  	--> Visitor Pattern
+  	--> Template Pattern
+  	--> Mediator Pattern
+  	--> Memento Pattern
+  	

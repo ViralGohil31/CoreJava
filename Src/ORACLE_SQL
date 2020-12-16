@@ -1,0 +1,30 @@
+ORACLE SQL 
+
+1. The ORACLE environment of database is called as Database Instances
+
+2. Which is the smallest unit of storage in an Oracle database.
+	--> Data Block
+	
+3.Collection of information stored in database at particular instance of time is called as
+	--> Instances of Database.
+
+4. Oracle database's design is called as 
+	--> Database schema
+
+5.What are the valid Oracle database schema
+ --> Logical and Physical Schema
+ 
+6.What do Schema Comprise of
+ --> Table,Index and Cluster.
+ 
+7. A _________ is a set of tables physically stored together as one table that shares a common column
+	-->Cluster
+	
+8. A _______ is used to logically group data together
+ 	--> TableSpace
+ 	
+9. Which command is used to remove all records from table.
+ 	--> delete
+ 	
+1. can we use decode statement in procedure.
+	--> yes

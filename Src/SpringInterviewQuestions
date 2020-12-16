@@ -1,0 +1,220 @@
+Spring interview Question
+
+	What are the modules have you used in Spring?
+	-->1.  DI(Dependency Injection)	
+	   2.  Spring MVC(Spring MVC)
+	   3.  Spring JDBC
+       4.  Spring AOP
+       5.  Spring JX-RS
+       
+       
+    1. DI
+    	1. What is dependency Injection?
+    	--> the application composed of many objects that collaborate with each other to perform some useful stuffs.
+    		Traditionally each object is responsible for obtaining its own references to the dependent objects it collaborate with.
+    		This leads to highly coupled classes and hard to test code.
+    		
+    		example
+    		class Car{
+ 				 private Wheel wh= new NepaliRubberWheel();
+  				 private Battery bt= new ExcideBattery();
+  				//rest
+			}
+			
+			Here, the Car object is responsible for creating the dependent objects.
+			What if we want to change the type of its dependent object - say Wheel - after the initial NepaliRubberWheel() punctures? We need to recreate the Car object with its new dependency say ChineseRubberWheel(), but only the Car manufacturer can do that.
+			Then what the Dependency Injection do us for ...
+			When using Dependency Injection, objects are given their dependencies at run time rather than compile time (car manufacturing time). 
+			So that we can now change the Wheel whenever we want. Here, 
+			the Dependency (Wheel) can be injected into Car at run time.
+			
+		2. What is inversion of control
+		  --> Inversion of Control (IoC) is a general concept, and it can be expressed in many different ways and 
+		  		Dependency Injection is merely one concrete example of Inversion of Control.
+				This concept says that you do not create your objects but describe how they should be created. 
+				You don't directly connect your components and services together in code 
+				but describe which services are needed by which components in a configuration file. 
+				A container is then responsible for hooking it all up.
+				
+				
+		3. what is AutoWired annotation?
+		 --> The @Autowired annotation is auto wire the bean by matching data type.
+		 	We can use autowired annotation on properties, constructor or setter method.
+		 	@Autowired will tell Spring to search for a Spring bean which implements the required interface and place it automatically into the setter.
+		 	
+		4. what is component scan is DI? difference between componentScan vs annotationConfig?
+		 -->@ComponenetScan annotation is used with configuration annotation to allow spring to know the packages to scan for
+		 	annotated components.
+		 	@ComponenetScan is also used to specify base packages using basePackageClasses or base package attribute to scan.
+		 	if specify package is not defined than ,scanning will occur from the package of the class that declares the annotation. 
+		 
+		 
+		5. Spring Bean Life Cycle?
+		 -->SpringBean factory is responsible for managing the life Cycle of beans created through spring container.
+		    The lifeCycle of beans consist of call back methods which can be categorized basically in 2 groups.
+		    
+		    1. PostInitialization Call Back Methods
+		    2. PreDestruction Call Back Methods
+		    
+		    
+		 
+		6. What are the annotation have you used in Spring?
+		 --> @AutoWired,@Qualifier,@Required,@RequestParam,@PathVariable,@Configuration,@ComponentScan,@RequestBody,@ResponseBody
+		 	 @Component,@Service,@Repository,@Controller,@RequestMapping. 
+		 
+		
+		7. If i make the class as final will able to inject the dependency of this class because once the final class is imutable class once it is created you can not able to modify this class.if yes than how.
+		--> yes we can able to inject the dependency because spring use Reflection to inject the dependency.
+		
+		8. what is circular dependency Injection? how to resolve it?
+		--> Circular DI will create when we are using Constructor based DI in spring.
+		-->	suppose there are two beans Person and Student. Student bean is injected the object of class Person.and Person is inject the object of class student.
+			so when we are using constructor based DI at that time dependency injected at the time of object creation.
+			so when the Person object creating time it will required to create the object of Student.
+			because Person is inject the object of type Student.so when it will going to create the object of student 
+			there also we are inject the dependency of Person.that is also not created.
+			
+			
+		
+		9. what is @Controller,@Component,@Repository,@Service annotation in spring?
+		--> When a class is annotated with one of the following Stereotypes 
+			Spring will automatically register them in the application context.
+		
+		--  @Component -  this annotation is used on classes to indicate a spring component.
+						  the @Component annotation makes the java class as a bean or say Component so that Component-Scanning mechanism of spring can add into
+						  application context.all other are the specialized version of Component annotation.
+						  
+		--> @Controller - is used to mark class as Controller.
+						  The Controller annotation tells the controller that the class is an MVC controller,usually used with RequestMapping annotation,among others.
+						 
+						
+		--> @Service --    the business logic of an application usually resides within service layer.
+						  so we'll use this annotation to mark the class as belong to the service layer.
+						  During Component Scan this bean found by spring added into spring context.
+						 
+		-->@Repository -- DAO or repository class usually represent the database access layer in an application.
+		
+			
+		10. what are the design pattern used by spring framework?
+		--> 1. Proxy Design Pattern - Spring AOP
+			2. Prototype , Singleton Design Pattern - Spring Bean Creation
+			3. Factory Design Pattern - BeanFactory Design Pattern.
+			4. Adapter Design Pattern - 
+		
+		11. What to do if i am having one bean which is having singleton scope and other bean is having prototype scope.but prototype scope bean is injected into
+			singleton bean scope than what to do so that on each request protoType bean scope will get create.
+			--> there are 3 ways to solve this problem
+			1. using implement ApplicationContextAware Interface:-
+			
+			2. LookUp annotation:-
+			Another way to solve the problem is method injection with the @Lookup annotation:
+		@Component
+		public class SingletonLookupBean {
+ 
+    	@Lookup
+    	public PrototypeBean getPrototypeBean() {
+        	return null;
+    	}
+		}
+		Spring will override the getPrototypeBean() method annotated with @Lookup. 
+		It then registers the bean into the application context.
+		Whenever we request the getPrototypeBean() method, it returns a new PrototypeBean instance.
+		
+		3. ObjectFactory Interface :-
+		
+		Spring provides the ObjectFactory<T> interface to produce on demand objects of the given type:
+
+		public class SingletonObjectFactoryBean {
+		 
+		    @Autowired
+		    private ObjectFactory<PrototypeBean> prototypeBeanObjectFactory;
+		 
+		    public PrototypeBean getPrototypeInstance() {
+		        return prototypeBeanObjectFactory.getObject();
+		    }
+		}
+		Let’s have a look at getPrototypeInstance() method; getObject() returns a brand new instance of PrototypeBean for each request. Here, we have more control over initialization of the prototype.
+		
+		Also, the ObjectFactory is a part of the framework; this means avoiding additional setup in order to use this option.
+		
+		
+2. Spring MVC
+
+	1. explain architecture of Spring MVC?
+	-->
+	
+	2. What are the annotation have you used in Spring MVC?
+    -->
+		
+		
+	3. What is frontController in Spring?
+	-->
+	
+	
+		 
+	4. what are the handler in spring?
+		1. SimpleControllerHandlerAdapter
+		2. RequestMappingHandlerAdapter
+		3. SimpleServletHandler Adapter
+		
+	
+	5. what is difference between Controller and RestController annotation?
+	
+	
+	6. what is RequestBody and ResponseBody annotation in spring??
+	
+	7. what are the viewResolver available in Spring?how to configure view Resolver in spring?
+	
+	8. How to handle Exception in Spring MVC.
+	Spring MVC provides following ways to help us achieving robust exception handling.
+	
+	     1. Controller based 			:  
+	     2. Global Exception Handler    :
+	     3. Handler Exception Resolver  : 
+	     
+	 9. difference between annotation-config and componenet-scan
+	 --> annotation-config is used to activate applied annotation in already registered beans in applicationContext.
+	 	 Note that is doesn't matter bean was register by which mechanism eg. using <component-scan> or it was defined 
+	 	 in the application-context.xml file itself.
+	 	 
+	 --> second difference is driven from first difference itself. it does register the beans in context + it also scans the
+	 	 annotation inside beans and activates them.
+	
+3.Spring JDBC
+
+	1. how you configure Spring JDBC to your spring application?
+	
+	2. what are the methods have you used in JdbcTemplate?
+	
+	3. what is difference between simpleJdbcTemplate and JdbcTemplate?
+	
+	4. what is property of TransactionTemplate.
+	
+	5. if I am using TransactionTemplate than if any error occurs in Transaction Templete than i rollback the whole transaction, but in i also logs
+		the entry into table. so i want to rollback the whole transaction but it should logs the entry into table.
+		so how could i partially commit the transaction in TransactionTemplete. 
+	
+	
+	
+4. Spring AOP
+
+	1. difference between Spring AOP and AspectJ
+	2. advantage of Spring AOP
+	3. what is pointcut,jointPoint,Aspect and Advice.
+	4. what is weaving.
+	5. types of advice.
+	6. can we able to acheive cross cutting if i make aspect class as final
+
+5. Spring web service
+
+	1. what are the annotation used in spring web service.
+	2. how to handle exception in spring web service.
+	3. How securely access web service. what security constraints need to follow.
+	-> Token based authentication used to authorize each request comes into the web service.
+	   Write the Project which authorize each request based on Token.it should able to restrict unauthorize access to the resource.
+	   
+
+	     
+	
+	
+	

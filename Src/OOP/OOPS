@@ -1,0 +1,67 @@
+1.Overriding
+
+	1.Overriding is connecting method call to method body at runtime.this is call as dynamic binding.
+	2.Overriding means of we can Override the method by extending Parent class and declare method of same name and same parameter list
+	  in child class which is having in parent class.
+	3. When we extend Parent class ,so child class can access all of data of Parent class(methods and variable).
+	4. class Animal                <-- Parent class,
+	   class Horse extends Animal  <-- Child class 
+		
+		so Horse we can say having access to all data member of class Animal+Horse class.
+	
+	Rules of Overriding. with respect to methods it overrides
+	
+		1. Must have same argument list.
+		2. Must have same return type,except that as of java 5 , the return type can be sub-class - this is known as covariant return.
+		3. Must not have a more restrictive access modifier.if not it will throw compile time error that cannot reduce the visibility of method 
+			if parent class Method is private than it will not override it in child class.
+			if parent class Method is protected than Child Class must Override method must be public.
+		4. May have less restrictive access modifier.
+		5. Must not throw new Broader Checked Exceptions.
+		6. May throw narrow Check and UnChecked Exceptions.
+		7. final methods cannot Overrides.if Override it will throw Compile time error.
+		8. private methods not inherited.
+		9. static methods cannot override.it is method of class level.
+		
+		
+2. Overloading
+	Rules of Overloading
+		1. Overload Methods must change in argument list.
+		2. Overload method must change in return type.
+		3. Overload method can change there return type.
+		4. A method can override in same class or in a sub class.
+		5. overload method can declare broader Checked exceptions.
+		
+		
+3. Encapsulation
+	 If you want maintainability, flexibility, and extensibility (and of course, you do),
+	 your design must include encapsulation. How do you do that?
+	 	1. Keep instance variables protected (with an access modifier, often private).
+	 	2. Make public accessor methods, and force calling code to use those methods
+			rather than directly accessing the instance variable.
+	 	3. For the methods, use the JavaBeans naming convention of
+			set<someProperty> and get<someProperty>.
+	
+	
+4. Abstraction
+	Hiding the implementation details only functionality showing to user.
+	 1. abstract class is the class may have one or more abstract methods or may not have.
+	 2. methods is declared as abstract if method cannot contain body in it.
+	 3. abstract methods must be Override it in sub class.if not than compilation error throw
+	 4. we cannot able to create the instance of abstract class or say can not create object of abstract class.
+	 5. we only only able to make reference type of class abstract class.
+	 6. Using interface we can achieve 100% abstraction.
+	 7. Interface not having constructor.
+	 8. All the methods declares in the interface that should have to be override it in sub class.
+	 
+5. Interface:
+	Interface will provide 100 % abstraction.
+	interface is the contract what class can do but it will not determine that what the way it will do.
+	class can implement multiple interface but cannot extend more than one class.
+	 	Syntax : interface interface_name or abstract interface interface_name
+	all the methods declared in the interface are public abstract.if not than compiler will convert.
+	all the variables declared inside the interface are static final.if not than compiler will convert.or all the object will create inside the interface is also static final.
+	interface can't declared as final or method also could not declared as final,protected.
+	methods declared in the interface are only allow public,abstract,default,static,strictfp accesss modifire are allowed.
+	we can also allow static methods inside interface.
+	

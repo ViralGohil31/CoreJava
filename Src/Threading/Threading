@@ -1,0 +1,38 @@
+Threading
+
+1. Thread is the small unit of Process.
+2. one Process is divided into n number of Thread.
+3. Each Thread in Java have there own Stack Frame where each Method call .the method and there local varible gets store into that 
+	Stack Frame.
+	so if two thread are executing same run method of same class by creating two different thread's.than both thread are having there own
+		local varibles and objects which will gets initilize inside that method.
+
+4. Synchronized Keyword
+	1.Synchronized Keyword is used in Method,Block or etc. It use to acquire that lock on object or method.
+	  actally it is used to make sure that only one thread will gets enterd into that area (Whatever that we written into that block)
+	  so other thread will wait untill thread whcih is running inside this will complete there execution.
+	  we can also make Object Synchronized to make sure that only thread will get access to it.
+	2. wait() and notify() could ba only allow inside Synchronized.
+	3.  inside synchronized method or block the thread will acquire the lock on that method or we can say on block or Object.
+	4. If we are not acquir lock on the Particular object and call wait() or notify() method on that object than it will 
+		throw Invalid Monitor State Exception.
+
+5. wait() and notify()
+	wait : It tells the calling thread to give up the lock and go to sleep until some other thread enters the same
+	monitor and calls notify().
+	
+	notify : It wakes up one single thread that call wait() on same object. it should be noted that calling notify() does not actually give
+			a lock on resource.it tells the waiting thread that thread can wake up..However,the lock is not given until the notifier's 
+			synchronized block has completed.	
+
+	
+	so if notifier calls notify() on a resource but the notifier still needs 10 seconds of action on the resource within its synchronized block,
+	the thread that had been waiting will nedd to wait at least another additional 10 seconds for notifier to release the lock on the object.'
+	even though notify() had been called.
+	
+	
+	
+	IllegalMonitorStateException : When you try to call wait() while without holding the objects or wait() is called  without inside Synchronized.
+	
+	
+	

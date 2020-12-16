@@ -1,0 +1,29 @@
+String.
+	String is Immutable Object.which means each time when we create String Object it will create new Object each time.
+	Two ways to Create String Object.
+	1. String s = "abc";
+	2. String s1 = new String("abc");
+		
+		--> the first way is use a String pool.means it will first find the String "abc" in String pool memory.
+			if this String "abc" is available in String pool than it will return the reference of that String.
+			otherwise it will make a entry or we can say create object in String pool and return reference of memory.
+			
+		--> the second way it will create new Object in Heap Memory. it will create new Object of String in heap memory.
+			like normal Object Creation in Heap Memory.
+			
+			
+What do you mean by Immutable.
+	Immutable means Object does not change once it will Created.
+	any modification into Objects will result in  Creation of new Object.			
+
+Why String is Immutable in Java
+	Suppose that 
+	String a = "abc";
+	String b = a;
+	b = b+"avdfdf";
+	than any changes into String b will also reflect to String a. 
+	so String we will use for multiple reason like password etc.
+	so for security reason java designer make this String Object Immutable. 
+	
+How to make Immutable Object
+	

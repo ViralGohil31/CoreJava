@@ -1,0 +1,154 @@
+Semaphores : Restrict the number of threads that can access a resource.
+			 for example  : limits max 10 connections to access a file simulaneously.
+			 
+Mutex 	   : Only one thread to access a resource at once.
+			  If Client is accessing a file,no one else should have the access the same file at the same time.
+		
+		
+ReadWriteLock/ReentrantReadWriteLock
+
+ReadLock   :  If no threads have locked the ReadWriteLock for writing.
+			  and no thread have requested a write lock(but not yet obtained it.)
+			  thus, multiple threads can lock the lock for reading.
+			
+WriteLock  : I no threads are reading or writing.
+			 thus,only one thread at a time can lock the lock for writing.
+			 
+
+Blocking Queue
+	Blocking queue is specially designed for the use of Producer Consumer Problem. producer thread producer element into queue by adding it into queue.
+	and consumer thread will consume element from queue.
+	if consumer thread tries to takes object from empty queue, than blocking queue will blocked the consumer thread to blocked until producer thread puts an object into queue.
+	Blocking queue is same as Queue it maintains the FIFO order.
+	element inserted from one end and remove from other end.the element which is inserted first will be remove first.than element which added after that element.
+	
+	
+	1. ArrayBlockingQueue	 -- > Fixed size queue.that stores element in an array.and it cannot stores unlimited amount of elements
+	2. LinkedBlockingQueue	 -- > keeps the element in linked structure.
+	3. PriorityBlockingQueue -- > it  maintains the object on the queue based on priority. highest priority object will be placed on head than low priority than that and so on. priority assign by implementing comparator or comparable inteface on that object .
+	4. SynchronousQueue 	 -- > is a queue that contain only single element internally. A thread inserting an element into the queue is blocked until another thread takes that element from the queue.likewise 
+								  is thread tries to take an element and no element is currently present , 
+								  that thread is blocked until a thread insert an element into the queue.
+	5. Delayed Queue		--	> Delayed Queue blocks the element internally until a certain delay has expired.
+									The value return by the getDelay() method should be the delay remaining before this element is released.
+									if 0 or negative value is returned , the delay will be  considered expired, and the element released at the next take() etc.
+	
+						Throw Exception		|		Special Value		|		Blocks		|		Time out
+--------------------------------------------|---------------------------|-------------------|---------------------------						
+	Insert	   			add(o)				|	offer(o)				|		put(o)		|		offer(o,timeout,time unit)
+											|							|					|
+	Remove				remove(o)			|	poll					|		take		|		poll((o,timeout,time unit)
+											|							|					|
+	EXAMINE				element()			|	peek					|					|
+											|							|					|
+											
+	add(E e) -->	inserts the specified elemens into this queue if it is possible to do so immediately without violating capacity restrictions,
+					return true upon success and throwing an IllegalStateException if no space is currently available.
+					
+					
+	offer(E e) -->  Inserts the specified element into queue if it is possible todo so immediately without violating capcity restrictions ,return true upon success and 
+					false  if no space is currently available.
+					
+					
+	put(E e)  -->	Inserts the specified element into queue, is queue is not empty than wait until space is available to insert elemtent into queue.
+			
+			
+	remove() -->	remove the specified element from the queue. is queue is empty than throw Exception.
+	remove(E e) --> remove the specified element from the queue is available.
+	
+	poll()	--> 	retrives and remove the head of the queue,or null if no element is available.
+	
+	take() -->  	retrives and removes the head of this queue , waiting if necessary until an element becomes available.
+							
+							
+	Thread Pool
+--> Java thread pools manages the pool of worker threads. it contains a queue that  keeps tasks waiting to get executed.
+	We can use ThreadPoolExecutor to create thread pool in java.
+	
+	Advantage 
+	 --> better performance . it saves time because there is no need to create new thread.
+	 
+	Real time usage
+	--> It is used in servlet and JSP where container creates a thread pool to process the request.
+	
+
+	
+	
+	
+	
+		
+Intrinsic vs Extrincsic lock
+
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Intrinsic Lock													|			Explicit Lock
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------																
+1. 	Whenever we synchronize any object we get					|		There is one more way to implement locking/synchronizing using Explicit lock			
+	an Intrinsic lock on that object.							|
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+2.	Output of Intrinsic lock would be different each time when  |		That is not what we wanted to acheive, but we wanted thread who requested  for lock 		
+ 	multiple thread runs.										|		first should get the lock first.but it is not possible  in case of using Intinsic locks.
+ 	that is random sequence in which the threads gets lock in	|		so here come the Explicit lock for our help.
+ 	intrinsic locking											|		example : Reentrant lock has special flag called fairness.
+ 																|		by making "fairness = true" . it ensures that the lock is granted to the thread who requested first.
+ 																|		bydefault ReentrantLock has fairness flag= false so it behaves same as Intrinsic lock. 
+ 																|		
+ 																|		Lock lock = new ReentrantLock(true);
+ -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------																
+3. 	deadlock only handles by acquires the object lock 			|		Polled and Timed Lock Acquisition.
+	on the same order in which lock relese on the object.		|--------------------------------------------------------------------------------------------		
+ 																|	--> public void transaferMoney(Account a1,Account a2,float amount)throws Exception{
+ 																|			synchronized(a1){
+ 																|				//acq lock on a1 obj
+ 																|				synchronized(a2){
+ 																|					//acq lock on a2 obj
+ 																|					if(amount>a1.getCurrentAmount()){
+ 																|						throw new InsuffiecientBalanceException();
+ 																|					}else{
+ 																|						a1.debit(amount);
+ 																|						a2.credit(amount);
+ 																|					}
+ 																|				}
+ 																|			}
+ 																|		}
+ 																|
+ 																|	if two threads are trying to transafer money almost at same time than deadlock occured.
+ 																|	Thread A : 	transaferMoney(acc1,acc2,20)
+ 																|	Thread B :  transaferMoney(acc2,acc1,20)
+ 																|	It is possible that Thread A has acquired the lock on  acc1 object at same time Thread B has acquired the
+ 																|	the lock on the object Account acc2.
+ 																|	so the Thread A want to acquired the lock which is held by Thread B.
+ 																|	and Thread B want to  acquired the lock which is held by Thread A. so both waits for each other. and deadlock will be acquired.
+ 																|
+ 																| The Cleaner approach is implemented by ReentrantLock with the use of tryLock() method.
+ 																|	the approach is called as timed and polled lock acquisition. it lets you regain the control if you cannot acquier all the required locks.
+ 																|	releases the one you haveacquired and retry.
+																|		so using tryLock, we will attempt to acquier both locks. If we cannot attain both ,we will releases 
+																|		if one of these has been acquired. then retry.
+																|
+																|
+																|	--> public void transaferMoney(Account a1,Account a2,float amount)throws Exception{
+ 																|			while(true){
+ 																|				if(a1.lock.tryLock()){
+ 																|					//acq lock on a1 obj
+ 																|					
+ 																|					if(a2.lock.tryLock()){
+ 																|							//acq lock on a2 obj
+ 																|							if(amount>a1.getCurrentAmount()){
+ 																|								throw new InsuffiecientBalanceException();
+ 																|							}else{
+ 																|								a1.debit(amount);
+ 																|								a2.credit(amount);
+ 																|							}
+ 																|						}
+ 																|					}
+ 																|				}								
+ 																|			}
+ 																|
+ ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Lock should have to be released in same block					|					Non Block Structured Locking
+ where it has acquired.											|----------------------------------------------------------------------------------------------------------------------------------------------------------
+ 																|	In Intrinsic lock , acquier - release pairs are block - structured.in other words lock always released in same block in which 
+ 																|	it was acquired.regardsless how control exits the block.
+ 																|	Extrinsic locks allows more facility to have more explicit control.
+ 																|
+ 																	
